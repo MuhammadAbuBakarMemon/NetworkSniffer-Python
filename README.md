@@ -1,4 +1,4 @@
-# PyPacketScope — Low-Level Network Packet Analyzer
+# Network Sniffer-Python — Low-Level Network Packet Analyzer
 
 > A raw-socket, zero-dependency network sniffer built in pure Python. Operates at the Ethernet frame level, manually unpacking every protocol header byte-by-byte using Python's `struct` module — no Scapy, no libpcap, no abstractions.
 
@@ -10,13 +10,13 @@ This tool is developed **strictly for educational purposes** — to understand h
 
 **Do not use this tool on any network you do not own or have explicit written permission to monitor.** Unauthorized interception of network traffic is illegal under computer fraud and wiretapping laws in most jurisdictions, including but not limited to the Computer Fraud and Abuse Act (CFAA, US), the Computer Misuse Act (UK), and equivalent legislation worldwide.
 
-The author assumes **no liability** for misuse of this software.
+I assume **no liability** for misuse of this software.
 
 ---
 
 ## Overview
 
-PyPacketScope opens a raw `AF_PACKET` socket directly against a network interface, pulling every Ethernet frame off the wire before the kernel's network stack processes it. Each captured frame is then dissected layer by layer — Ethernet → IPv4 → TCP / UDP / ICMP — using Python's `struct.unpack()` against known protocol header layouts defined in their respective RFCs.
+Network Sniffer-Python opens a raw `AF_PACKET` socket directly against a network interface, pulling every Ethernet frame off the wire before the kernel's network stack processes it. Each captured frame is then dissected layer by layer — Ethernet → IPv4 → TCP / UDP / ICMP — using Python's `struct.unpack()` against known protocol header layouts defined in their respective RFCs.
 
 The result is a terminal-based packet analyzer that gives you full visibility into the byte-level structure of live network traffic, printed in a Wireshark-style hex dump format.
 
