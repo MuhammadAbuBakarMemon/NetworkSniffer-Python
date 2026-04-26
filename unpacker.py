@@ -17,9 +17,9 @@ def unpack_ethernet(raw_frame : bytes) -> tuple:
 	#sliced out the ethernet header
 	header = raw_frame[:ETH_HEADER_LEN]
 	
-	dst_mac_raw, src_mac_raw, ethr_type = struct.unpack("6s6sH", header)  
+	dst_mac_raw, src_mac_raw, ether_type = struct.unpack("6s6sH", header)  
 	
-	dst_mac = format_mac(dst_raw_mac)
+	dst_mac = format_mac(dst_mac_raw)
 	src_mac = format_mac(src_mac_raw)
 	
 	payload = raw_frame[:ETH_HEADER_LEN]

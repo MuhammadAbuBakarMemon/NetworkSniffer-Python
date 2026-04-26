@@ -5,7 +5,7 @@ def display_ethernet(dest_mac, src_mac, ether_type):
 	print(f" [ETH] {src_mac} -> {dest_mac} | Ethertype: 0x{ether_type:04X}")
 	
 def display_ipv4(version, ihl, ttl, proto, src_ip, dest_ip):
-	proto_map = {1:"ICMP", 6:"TCP", 17::"UDP"}
+	proto_map = {1:"ICMP", 6:"TCP", 17:"UDP"}
 	proto_name = proto_map.get(proto, f"UNKNOWN{proto}")
 	print(" [IP{version}]  {src_ip} -> {dest_ip} | Proto: {proto_name} TTL: {ttl} IHL: {ihl}B")
 
@@ -26,7 +26,8 @@ def display_payload(payload: bytes, max_bytes: int = 64):
 		return
 		
 	data = payload[:max_bytes]
-	print(f"[PAYLOAD] {len(payload)} bytes -> total (showing {len(data)}):" hex_dump(data)) 
+	print(f"[PAYLOAD] {len(payload)} bytes -> total (showing {len(data)}):") 
+	hex_dump(data) 
 	
 def hex_dump(data : bytes, width : int = 16):
 	
@@ -42,5 +43,3 @@ def hex_dump(data : bytes, width : int = 16):
 		ascii_col = "".join(chr(b) if 32 <= b < 127 else "." for b in chunk)
 
 		print(f" {offset} {hex_col} |{ascii_col}|")
-
-]
