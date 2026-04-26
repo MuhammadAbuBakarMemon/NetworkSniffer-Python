@@ -17,12 +17,12 @@ def unpack_ethernet(raw_frame : bytes) -> tuple:
 	#sliced out the ethernet header
 	header = raw_frame[:ETH_HEADER_LEN]
 	
-	dst_mac_raw, src_mac_raw, ether_type = struct.unpack("6s6sH", header)  
+	dst_mac_raw, src_mac_raw, ether_type = struct.unpack("!6s6sH", header)  
 	
 	dst_mac = format_mac(dst_mac_raw)
 	src_mac = format_mac(src_mac_raw)
 	
-	payload = raw_frame[:ETH_HEADER_LEN]
+	payload = raw_frame[ETH_HEADER_LEN:]
 	
 	return dst_mac, src_mac, ether_type, payload
 
@@ -43,11 +43,11 @@ def unpack_ipv4(raw_packet : bytes) -> tuple:
 	ihl_bytes = ihl * 4
 	
 	dest_ip = format_ip(dest_ip_raw)
-	src_ip = fromat_ip(src_ip_raw)
+	src_ip = format_ip(src_ip_raw)
 	
-	payload = raw_bytes[ihl_bytes:]
+	payload = raw_packet[ihl_bytes:]
 	
-	return version, ihl_bytes, ttl, proto, dest_ip, checksum, src_ip, dest_ip, payload
+	return version, ihl_bytes, ttl, proto, checksum, src_ip, dest_ip, payload
 	
 def format_ip(raw_bytes : bytes) -> str:
 	return ".".join(str(b) for b in raw_bytes)
@@ -67,7 +67,7 @@ def unpack_tcp(raw_segment : bytes) -> tuple:
 	return src_port, dest_port, seq, ack, flags_str, window, payload
 	
 def parse_tcp_flags(flags : int) -> str:
-	flag_map = [(0x100, "URG"), (0x080, "ACK"), (0x040, "PSH"), (0x020, "RST"), (0x010, "SYS"), ("0x008", "FIN")]
+	flag_map = [(0x100, "URG"), (0x080, "ACK"), (0x040, "PSH"), (0x020, "RST"), (0x010, "SYN"), (0x008, "FIN")]
 	
 	#return " ".join(name for mask, name in flag_map if flags & mask) 
 	#alternate approach
@@ -83,15 +83,15 @@ def parse_tcp_flags(flags : int) -> str:
 def unpack_udp(raw_segment : bytes) -> tuple:
 	header = raw_segment[:8]
 	
-	(src_port, dest_port, lenght, checksum) = struct.unpack("!HHHH", header)
+	(src_port, dest_port, length, checksum) = struct.unpack("!HHHH", header)
 	
 	payload = raw_segment[8:]
-	return src_port, dest_port, lenght, payload	
+	return src_port, dest_port, length, payload	
 
 def unpack_icmp(raw_segment : bytes) -> tuple:
 	header = raw_segment[:8]
 	
-	(icmp_type, code, checksum, rest) = struct.unpack("!BBH4s")
+	(icmp_type, code, checksum, rest) = struct.unpack("!BBH4s", header)
 	
 	payload = raw_segment[8:]
 	

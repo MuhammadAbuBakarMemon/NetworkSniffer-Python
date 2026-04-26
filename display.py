@@ -7,7 +7,7 @@ def display_ethernet(dest_mac, src_mac, ether_type):
 def display_ipv4(version, ihl, ttl, proto, src_ip, dest_ip):
 	proto_map = {1:"ICMP", 6:"TCP", 17:"UDP"}
 	proto_name = proto_map.get(proto, f"UNKNOWN{proto}")
-	print(" [IP{version}]  {src_ip} -> {dest_ip} | Proto: {proto_name} TTL: {ttl} IHL: {ihl}B")
+	print(f" [IP{version}]  {src_ip} -> {dest_ip} | Proto: {proto_name} TTL: {ttl} IHL: {ihl}B")
 
 def display_tcp(src_port, dest_port, seq, ack, flags, window):
 	print(f" [TCP] {src_port} -> {dest_port} | Flags: [{flags}] Seq: {seq} Ack: {ack} Window: {window}")
